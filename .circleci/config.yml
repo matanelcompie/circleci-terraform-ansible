@@ -5,6 +5,7 @@ jobs:
     machine:
       image: ubuntu-2004:202111-02
     resource_class: medium
+    working_directory: ~/checkout
     steps:
       - checkout
       - run:
@@ -13,17 +14,33 @@ jobs:
              pwd
              ls
       - run:
-          name: Send ansible directory to public instance (from checkout)
-          command: |
-             scp -r ./ansible "$SSH_USER@$SSH_HOST:/home/$SSH_USER"
-      - run:
           name: Install ansible on puclic instance
           command: |
-             ssh $SSH_USER@$SSH_HOST "hostname; sudo apt-get update; sudo apt install ansible -y"            
+             ssh $SSH_USER@$SSH_HOST "hostname; sudo apt-get update; sudo apt install ansible -y"
+      - run:
+          name: Edit ansible vars
+          command: |
+             cd ansible
+             echo "repo: << pipeline.parameters.repo >>" > vars.yml 
+             echo "branch: << pipeline.parameters.branch >>" > vars.yml
+             cat vars.yml
+      - run:
+          name: Send ansible directory to public instance (from checkout)
+          command: |
+             scp -r ./ansible "$SSH_USER@$SSH_HOST:/home/$SSH_USER"                    
       - run:
           name: Run ansible playbook
           command: |
              ssh $SSH_USER@$SSH_HOST "cd ansible; ansible-playbook playbook.yaml"
+
+parameters:
+  repo:
+    default: latest
+    type: string
+  branch:
+    default: latest
+    type: string
+
 workflows:
   version: 2
   build-and-deploy:
