@@ -7,9 +7,9 @@
       state: present
   - name: Example clone of a single branch
     ansible.builtin.git:
-      repo: git@github.com:matanelg/circleci-test.git
+      repo: git@github.com:matanelcompie/circleci-test.git
       dest: /home/ubuntu/repos
       accept_hostkey: yes
-      key_file: /home/ubuntu/.ssh/github2
+      key_file: /home/ubuntu/.ssh/github
       version: b
 # src - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
