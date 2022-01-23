@@ -22,7 +22,7 @@ jobs:
           command: |
              cd ansible
              echo "repo: << pipeline.parameters.repo >>" > vars.yml 
-             echo "branch: << pipeline.parameters.branch >>" > vars.yml
+             echo "branch: << pipeline.parameters.branch >>" >> vars.yml
              cat vars.yml
       - run:
           name: Send ansible directory to public instance (from checkout)
