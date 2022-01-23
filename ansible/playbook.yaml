@@ -1,0 +1,15 @@
+---
+- hosts: dev
+  tasks:
+  - name: Install git
+    apt:
+      name: git
+      state: present
+  - name: Example clone of a single branch
+    ansible.builtin.git:
+      repo: git@github.com:matanelg/circleci-test.git
+      dest: /home/ubuntu/repos
+      accept_hostkey: yes
+      key_file: /home/ubuntu/.ssh/github2
+      version: b
+# src - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html

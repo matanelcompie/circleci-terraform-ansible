@@ -1,0 +1,26 @@
+---
+version: 2.1
+jobs:
+  deploy:
+    machine:
+      image: ubuntu-2004:202111-02
+    resource_class: medium
+    steps:
+      - checkout
+      - run: pwd
+      - run: ls #
+      - run: scp -r ./ansible "$SSH_USER@$SSH_HOST:/home/$SSH_USER" # for ansible from checkout
+      - run: ssh $SSH_USER@$SSH_HOST "hostname; sudo apt-get update; sudo apt install ansible -y"
+      - run: ssh $SSH_USER@$SSH_HOST "cd ansible; ansible-playbook playbook.yaml"
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: main # only deploy on the main branch
+# ssh $SSH_USER@$SSH_HOST "ansible dev -m command -a 'hostname'"
+# - run: ssh $SSH_USER@$SSH_HOST "ansible-playbook /home/ubuntu/ansible/playbook.yaml"
+# - run: ssh $SSH_USER@$SSH_HOST "ansible dev -i /home/ubuntu/ansible/inventory -m file -a 'path=/home/ubuntu/ubuntu_test.txt state=touch'"
+#- run: ssh $SSH_USER@$SSH_HOST "ansible all -i inventory -m ping"
