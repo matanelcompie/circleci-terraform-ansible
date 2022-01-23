@@ -1,5 +1,7 @@
 ---
 - hosts: dev
+  vars_files:
+    - ~/ansible/vars.yml  
   tasks:
   - name: Install git
     apt:
@@ -7,9 +9,9 @@
       state: present
   - name: Example clone of a single branch
     ansible.builtin.git:
-      repo: git@github.com:matanelcompie/circleci-test.git
+      repo: "{{ repo }}"
       dest: /home/ubuntu/repos
       accept_hostkey: yes
       key_file: /home/ubuntu/.ssh/github
-      version: b
+      version: "{{ branch }}"
 # src - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
