@@ -1,4 +1,9 @@
 # circleci-terraform-ansible
+## Introduction
+This project run ci/cd pipeline with circleci api and will do the following things.
+- Create resources in aws via terraform (for now not include in pipeline and run locally)
+- Use ansible to checkout branches from (github/bitbucket) on private instance.  
+
 ## 01. circleci
 ### 01.01 Terraform dependencies
 1. Add aws credentials for as Context (Organization Settings >> Create Context >> Add Environment Variables)
